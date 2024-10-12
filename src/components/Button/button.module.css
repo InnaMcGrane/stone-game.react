@@ -1,0 +1,17 @@
+
+.game__btn {
+  margin-bottom: 10px;
+}
+
+.btn {
+  cursor: pointer;
+}
+
+.btn--start {
+  padding: 10px 15px;
+  background-color: #14ae7f;
+  font-weight: bold;
+  color: white;
+  font-size: 18px;
+  text-transform: uppercase;
+}
