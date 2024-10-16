@@ -1,4 +1,7 @@
+import Game from "../Game/Game";
+
 function App() {
-    return
+    return <Game />
 }
+
 export default App;
