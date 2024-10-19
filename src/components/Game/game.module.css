@@ -7,6 +7,9 @@
   margin-top: 30px;
 }
 
+.game__btn {
+  margin-bottom: 10px;
+}
 
 .game__found {
   font-size: 25px;
