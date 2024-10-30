@@ -3,7 +3,7 @@ import styles from "./game.module.css";
 import Button from "../Button/Button";
 import data from "../../data";
 import Stone from "../Stone/Stone";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 function Game() {
   const [gameActive, setGameActive] = useState(false);
@@ -21,17 +21,14 @@ function Game() {
 
   const [pair, setStatePair] = useState([]);
 
-    const setStatePairHandler = (obj) => {
-    if (pair.length === 1 && pair[0].id === obj.id) {
-      return;
-    }
-
-    setStatePair(obj);
-    console.log(pair);
+  useEffect(() => {
+    // проверка на dblclick
+    // if (pair.length === 1 && pair[0].id === obj.id) {
+    //   return;
+    // }
 
     if (isEqualPair()) {
       const idsStonesInPair = [pair[0].id, pair[1].id];
-
       const newStateStonesArray = stonesStatus.map((el) => {
         if (idsStonesInPair.includes(el.id)) {
           // камень найден по id
@@ -39,16 +36,22 @@ function Game() {
           el.hide = false;
           return el;
         }
-
         return el;
       });
-
       setStonesStatus(newStateStonesArray);
-      // setStateFoundParts(this._state.foundParts + 1);
     }
-  }
+    // console.log(pair);
+  }, [pair]);
 
-    const isEqualPair = () => {
+  const setStatePairHandler = (obj) => {
+    if (pair.length === 2) {
+      setStatePair([obj]);
+    } else {
+      setStatePair([...pair, obj]);
+    }
+  };
+
+  const isEqualPair = () => {
     if (pair.length < 2) {
       return false;
     }
@@ -58,37 +61,37 @@ function Game() {
     }
 
     return false;
-  }
+  };
 
-  const setGameActiveHandler = () => {
-    const newGameActive = !gameActive
-
-    setGameActive(newGameActive);
-
+  useEffect(() => {
     // игра активна
-    if (newGameActive === true) {
+    if (gameActive === true) {
       setStonesStatus(
         stonesStatus.map((el) => {
           return {
             ...el,
             disabled: false,
-            hide: newGameActive === true ? true : false,
+            hide: gameActive === true ? true : false,
           };
         })
       );
     }
-    
-    if (newGameActive === false) {
+
+    if (gameActive === false) {
       setStonesStatus(
         stonesStatus.map((el) => {
           return {
             ...el,
             disabled: true,
             hide: false,
-          }
+          };
         })
-      )
+      );
     }
+  }, [gameActive]);
+
+  const setGameActiveHandler = () => {
+    setGameActive(!gameActive);
   };
 
   return (
