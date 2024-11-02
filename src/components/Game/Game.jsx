@@ -91,9 +91,27 @@ function Game() {
           };
         })
       );
+      setFoundParts(0)
     }
   }, [gameActive]);
 
+
+   const getTotalParts = () => {
+    const obj = {};
+
+    stonesStatus.forEach((el) => {
+      if (obj[el.color] === undefined) {
+        obj[el.color] = 1;
+      } else {
+        obj[el.color] += 1;
+      }
+    });
+
+    return Object.values(obj).reduce((acc, num) => {
+      acc += Math.floor(num / 2);
+      return acc;
+    }, 0);
+  }
 
   const setGameActiveHandler = () => {
     setGameActive(!gameActive);
@@ -105,7 +123,7 @@ function Game() {
         <Button type="start" text={gameActive === true ? "finish game" : "start game"} handler={setGameActiveHandler} />
       </div>
       <span className={cn(styles["game__found"])}>found parts: {foundParts}</span>
-      <span className={cn(styles["game__total"])}>total parts: 0</span>
+      <span className={cn(styles["game__total"])}>total parts: {getTotalParts()}</span>
       <div className={cn(styles["game__wrapper"])}>
         {stonesStatus.map((el) => {
           return <Stone id={el.id} color={el.color} hide={el.hide} disabled={el.disabled} img={el.img} key={el.id} setStatePairHandler={setStatePairHandler} />;
