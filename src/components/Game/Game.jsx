@@ -23,11 +23,6 @@ function Game() {
   const [pair, setStatePair] = useState([]);
 
   useEffect(() => {
-    // проверка на dblclick
-    // if (pair.length === 1 && pair[0].id === obj.id) {
-    //   return;
-    // }
-
     if (isEqualPair()) {
       const idsStonesInPair = [pair[0].id, pair[1].id];
 
@@ -47,6 +42,12 @@ function Game() {
   }, [pair]);
 
   const setStatePairHandler = (obj) => {
+    // проверка на dblclick
+    if (pair.length === 1 && pair[0].id === obj.id) {
+      console.log('это тот же камень');
+      return;
+    }
+
     if (pair.length === 2) {
       setStatePair([obj]);
     } else {
