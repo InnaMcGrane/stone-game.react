@@ -3,12 +3,11 @@ import styles from "./game.module.css";
 import Button from "../Button/Button";
 import data from "../../data";
 import Stone from "../Stone/Stone";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 
 function Game() {
-
   const [gameActive, setGameActive] = useState(false);
-  const [foundParts, setFoundParts] = useState(0)
+  const [foundParts, setFoundParts] = useState(0);
   const [stonesStatus, setStonesStatus] = useState(
     data
       .map((el) => {
@@ -42,7 +41,7 @@ function Game() {
         return el;
       });
       setStonesStatus(newStateStonesArray);
-      setFoundParts(foundParts + 1)
+      setFoundParts(foundParts + 1);
     }
     // console.log(pair);
   }, [pair]);
@@ -91,12 +90,11 @@ function Game() {
           };
         })
       );
-      setFoundParts(0)
+      setFoundParts(0);
     }
   }, [gameActive]);
 
-
-   const getTotalParts = () => {
+  const getTotalParts = () => {
     const obj = {};
 
     stonesStatus.forEach((el) => {
@@ -111,7 +109,9 @@ function Game() {
       acc += Math.floor(num / 2);
       return acc;
     }, 0);
-  }
+  };
+
+  const totalParts = useMemo(() => getTotalParts(), []);
 
   const setGameActiveHandler = () => {
     setGameActive(!gameActive);
@@ -123,7 +123,7 @@ function Game() {
         <Button type="start" text={gameActive === true ? "finish game" : "start game"} handler={setGameActiveHandler} />
       </div>
       <span className={cn(styles["game__found"])}>found parts: {foundParts}</span>
-      <span className={cn(styles["game__total"])}>total parts: {getTotalParts()}</span>
+      <span className={cn(styles["game__total"])}>total parts: {totalParts}</span>
       <div className={cn(styles["game__wrapper"])}>
         {stonesStatus.map((el) => {
           return <Stone id={el.id} color={el.color} hide={el.hide} disabled={el.disabled} img={el.img} key={el.id} setStatePairHandler={setStatePairHandler} />;
