@@ -6,7 +6,9 @@ import Stone from "../Stone/Stone";
 import { useState, useEffect } from "react";
 
 function Game() {
+
   const [gameActive, setGameActive] = useState(false);
+  const [foundParts, setFoundParts] = useState(0)
   const [stonesStatus, setStonesStatus] = useState(
     data
       .map((el) => {
@@ -29,6 +31,7 @@ function Game() {
 
     if (isEqualPair()) {
       const idsStonesInPair = [pair[0].id, pair[1].id];
+
       const newStateStonesArray = stonesStatus.map((el) => {
         if (idsStonesInPair.includes(el.id)) {
           // камень найден по id
@@ -39,6 +42,7 @@ function Game() {
         return el;
       });
       setStonesStatus(newStateStonesArray);
+      setFoundParts(foundParts + 1)
     }
     // console.log(pair);
   }, [pair]);
@@ -90,6 +94,7 @@ function Game() {
     }
   }, [gameActive]);
 
+
   const setGameActiveHandler = () => {
     setGameActive(!gameActive);
   };
@@ -99,7 +104,7 @@ function Game() {
       <div className={cn(styles["game__btn"])}>
         <Button type="start" text={gameActive === true ? "finish game" : "start game"} handler={setGameActiveHandler} />
       </div>
-      <span className={cn(styles["game__found"])}>found parts: 0</span>
+      <span className={cn(styles["game__found"])}>found parts: {foundParts}</span>
       <span className={cn(styles["game__total"])}>total parts: 0</span>
       <div className={cn(styles["game__wrapper"])}>
         {stonesStatus.map((el) => {
